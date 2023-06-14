@@ -2,20 +2,21 @@ import axios from 'axios'
 import {useState, useEffect} from 'react'
 
 function Swflag(){
-const [ bandera, setBandera] = useState('')
-    useEffect(()=>{
-        async function fetchData(){
-            const res = await axios.get(`https://countriesnow.space/api/v0.1/countries/flag/images`)  // acá hacemos la consulta de axios a la API
-            setBandera(res.data) // la data devuelta de la consulta la almacenamos en la variable movie
-            console.log(res.data.data[0].flag)  // mostramos por consola la data que devolvió la consulta de la API
-        }
-        fetchData() // ejecutamos la función de búsqueda de datos
-        console.log(bandera) 
-},[])
-return(
-<div>
-    hola
-</div>
-)}
+const [ banderas, setBandera] = useState([])
+useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get('https://countriesnow.space/api/v0.1/countries/flag/images');
+      setBandera(res.data.data); // Corregimos esta línea para almacenar correctamente los datos de la respuesta en 'bandera'
+      console.log(res.data.data); // Mostramos los datos en la consola
+    }
+
+    fetchData();
+  }, []);
+
+  return (
+    <div> 
+      {banderas.length > 0 && <img src={banderas[-1].flag} alt="Flag"/>}
+    </div>
+  );}
 
 export default Swflag;
