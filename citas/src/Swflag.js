@@ -1,4 +1,5 @@
 import axios from 'axios';
+import './Swflag.css';
 import { useState, useEffect } from 'react';
 
 function Swflag() {
@@ -12,10 +13,13 @@ function Swflag() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('https://countriesnow.space/api/v0.1/countries/flag/images');
+        const res = await axios.get(
+          'https://countriesnow.space/api/v0.1/countries/flag/images'
+        );
         if (res.data && res.data.data && res.data.data.length > 0) {
           setBanderas(res.data.data);
           seleccionarBanderas(res.data.data);
+          
         }
       } catch (error) {
         console.error('Error al obtener las banderas:', error);
@@ -31,14 +35,16 @@ function Swflag() {
     const banderaSeleccionada = banderas[indice];
 
     setSeleccionada(banderaSeleccionada);
-    setAdivinanza();
+    
+    setAdivinanza('');
     setTimer(15);
+    
   };
 
   // Función para manejar el intento de adivinar el país
   const intentarAdivinar = () => {
     const paisAdivinado = adivinanza.toLowerCase();
-  
+
     if (paisAdivinado === seleccionada.name.toLowerCase()) {
       const nuevosPuntos = puntos + 10;
       setPuntos(nuevosPuntos);
@@ -46,7 +52,7 @@ function Swflag() {
       const nuevosPuntos = puntos - 1;
       setPuntos(nuevosPuntos);
     }
-  
+
     seleccionarBanderas(banderas);
   };
 
@@ -80,11 +86,13 @@ function Swflag() {
   }, [timer, puntos, banderas]);
 
   return (
-    <div>
+   
+    <div className="container">
+      <h1>Nombre: {nombre}</h1>
       <h1>Juego de Adivinar la Bandera</h1>
       {seleccionada && (
-        <div>
-          <img src={seleccionada.flag} alt="Flag" />
+        <div className="card">
+          <img className="banderaImg" src={seleccionada.flag} alt="Flag" />
           <h2>{adivinanza}</h2>
           <input
             type="text"
